@@ -11,8 +11,8 @@ User Function LogExample
     Local oLogger := Log():New("My custom log name")
 
     oLogger:Debug("This is a debug message")
-    oLogger:Info("This is a info message")
-    oLogger:Error("This is a error message")
+    oLogger:Info("This is an info message")
+    oLogger:Error("This is an error message")
 Return
 ```
 
