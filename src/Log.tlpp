@@ -53,6 +53,7 @@ Class Log
 
     Private Method GetLogMessageWithParameters(cLog, aParameters)
     Private Method ApplyFormatter(cLogName, cLevel, cLog)
+    Private Method GetLogLevelFromLogString(cLevel)
 EndClass
 
 Method New(cLogName) Class Log
@@ -93,7 +94,7 @@ Return ::Log("FATAL", ::GetLogMessageWithParameters(cLog, aParameters))
 Method Log(cLevel, cLog) Class Log
     Local cCurrentLogLevel := SuperGetMV("MV_LOGLEVE",, "INFO")
     
-    If cCurrentLogLevel == cLevel
+    If ::GetLogLevelFromLogString(cLevel) <= ::GetLogLevelFromLogString(cCurrentLogLevel)
         cLog := ::oFormatter:ApplyFormatter(::cLogName, cLevel, cLog)
         ::oAppender:Execute(cLog)
     EndIf
@@ -101,8 +102,29 @@ Return
 
 Method GetLogMessageWithParameters(cLog, aParameters) Class Log
     Local nIndex
+    Default aParameters := {}
 
     For nIndex := 1 To Len(aParameters)
         cLog := StrTran(cLog, LOGGING_WILDCARD, CValToChar(aParameters[nIndex]), START_POSITION, REPLACE_SIZE)
     Next
 Return cLog
+
+Method GetLogLevelFromLogString(cLevel) Class Log
+    Local nLevel
+    Do Case
+        Case cLevel == "ALL"
+            nLevel := 7
+        Case cLevel == "TRACE"
+            nLevel := 6
+        Case cLevel == "DEBUG"
+            nLevel := 5
+        Case cLevel == "INFO"
+            nLevel := 4
+        Case cLevel == "WARN"
+            nLevel := 3
+        Case cLevel == "ERROR"
+            nLevel := 2
+        Case cLevel == "FATAL"
+            nLevel := 1
+    EndCase
+Return nLevel
