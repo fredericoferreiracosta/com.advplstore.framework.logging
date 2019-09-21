@@ -35,6 +35,15 @@ Se o parâmetro não existir, o valor padrão será INFO.
 
 Caso não passe o nome do log no construtor da classe então o sistema usa a função ProcName para identificar o nome da classe/função de origem.
 
+Parâmetros podem ser passados para o log sem se preocupar com o tipo da variável:
+```
+oLogger:Info("My name is {} and I will be {} years old at {}.", {"Josh", 42, dDatabase})
+```
+Output:
+```
+[20/09/2019][22:26:06.913]   [INFO]   My custom log name - My name is Josh and I will be 42 years old at 20/09/2019.
+```
+Você pode alterar este layout de saída criando um novo formatter com o layout da sua empresa ou do seu cliente.
 ## Contribuição
 
 Este projeto é livre. Usem à vontade. Se encontrar algum bug reporte aqui no GitHub e se fizer alguma melhoria no código, contribua com um pull request :blush:
