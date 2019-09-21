@@ -1,0 +1,108 @@
+#include "protheus.ch"
+
+#define LOGGING_WILDCARD "{}"
+#define REPLACE_SIZE 1
+#define START_POSITION 1
+#define FUNCTION_STACK_LEVEL 1
+/*/{Protheus.doc}
+Logger class from AdvPL Store logging services.
+
+This class will provide a logging framework for TL++ apps.
+
+Permission is hereby granted, free  of charge, to any person obtaining
+a  copy  of this  software  and  associated  documentation files  (the
+"Software"), to  deal in  the Software without  restriction, including
+without limitation  the rights to  use, copy, modify,  merge, publish,
+distribute,  sublicense, and/or sell  copies of  the Software,  and to
+permit persons to whom the Software  is furnished to do so, subject to
+the following conditions:
+The  above  copyright  notice  and  this permission  notice  shall  be
+included in all copies or substantial portions of the Software.
+THE  SOFTWARE IS  PROVIDED  "AS  IS", WITHOUT  WARRANTY  OF ANY  KIND,
+EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF
+MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+/*/
+Class Log
+    Private Data cLogName
+    Private Data oFormatter
+    Private Data oAppender
+    /*/{Protheus.doc}
+    Default constructor.
+    /*/
+    Public Method New(cLogName) Constructor
+
+    /*/{Protheus.doc}
+    Decorators for the Log method.
+    /*/
+    Public Method All(cLog, aParameters)
+    Public Method Trace(cLog, aParameters)
+    Public Method Debug(cLog, aParameters)
+    Public Method Info(cLog, aParameters)
+    Public Method Warn(cLog, aParameters)
+    Public Method Error(cLog, aParameters)
+    Public Method Fatal(cLog, aParameters)
+
+    /*/{Protheus.doc}
+    Will print the log in the console.
+    /*/
+    Private Method Log(cLevel, cLog)
+
+    Private Method GetLogMessageWithParameters(cLog, aParameters)
+    Private Method ApplyFormatter(cLogName, cLevel, cLog)
+EndClass
+
+Method New(cLogName) Class Log
+    Local oLogFormatterFactory := LogFormatterFactory():New()
+    Local oLogAppenderFactory := LogAppenderFactory():New()
+    
+    ::oFormatter := oLogFormatterFactory:GetFormatter(SuperGetMV("MV_LOGFORM",, "DEFAULT"))
+    ::oAppender := oLogAppenderFactory:GetAppender(SuperGetMV("MV_LOGAPP",, "CONSOLE"))
+
+    If !Empty(cLogName)
+        ::cLogName := cLogName
+    Else
+        ::cLogName := ProcName(FUNCTION_STACK_LEVEL)
+    EndIf
+Return Self
+
+Method All(cLog, aParameters) Class Log
+Return ::Log("ALL", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Trace(cLog, aParameters) Class Log
+Return ::Log("TRACE", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Debug(cLog, aParameters) Class Log
+Return ::Log("DEBUG", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Info(cLog, aParameters) Class Log
+Return ::Log("INFO", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Warn(cLog, aParameters) Class Log
+Return ::Log("WARN", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Error(cLog, aParameters) Class Log
+Return ::Log("ERROR", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Fatal(cLog, aParameters) Class Log
+Return ::Log("FATAL", ::GetLogMessageWithParameters(cLog, aParameters))
+
+Method Log(cLevel, cLog) Class Log
+    Local cCurrentLogLevel := SuperGetMV("MV_LOGLEVE",, "INFO")
+    
+    If cCurrentLogLevel == cLevel
+        cLog := ::oFormatter:ApplyFormatter(::cLogName, cLevel, cLog)
+        ::oAppender:Execute(cLog)
+    EndIf
+Return
+
+Method GetLogMessageWithParameters(cLog, aParameters) Class Log
+    Local nIndex
+
+    For nIndex := 1 To Len(aParameters)
+        cLog := StrTran(cLog, LOGGING_WILDCARD, CValToChar(aParameters[nIndex]), START_POSITION, REPLACE_SIZE)
+    Next
+Return cLog
