@@ -1,9 +1,7 @@
 #include "protheus.ch"
 
 /*/{Protheus.doc}
-Console implementation for the AdvPL Store logging service.
-Will print the log messages in the TOTVS Console using ConOut
-function.
+Default layout for log messages from AdvPL Store logging services.
 
 Permission is hereby granted, free  of charge, to any person obtaining
 a  copy  of this  software  and  associated  documentation files  (the
@@ -21,22 +19,27 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Read more at https://github.com/fredericoferreiracosta/com.advplstore.framework.logging
 /*/
-Class ConsoleAppender
+Class DefaultLogFormatter
     /*/{Protheus.doc}
     Default constructor.
     /*/
     Public Method New() Constructor
 
     /*/{Protheus.doc}
-    Execute the logging action. Returns nothing.
+    Adds the metadata information to the log message.
+    This will return the log message as must be printed
+    according to this formatter.
     /*/
-    Public Method Execute(cLog)
+    Public Method ApplyFormatter(cLogName, cLevel, cLog)
 EndClass
 
-Method New() Class ConsoleAppender
+Method New() Class DefaultLogFormatter
 Return Self
 
-Method Execute(cLog) Class ConsoleAppender
-    ConOut(cLog)
-Return
+Method ApplyFormatter(cLogName, cLevel, cLog) Class DefaultLogFormatter
+Return "[" + DtoC(Date()) + "]" +;
+    "[" + TimeFull() + "]   " +;
+    "[" + cLevel + "]   " + cLogName + " - " + cLog

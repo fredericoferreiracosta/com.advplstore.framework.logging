@@ -1,8 +1,9 @@
 #include "protheus.ch"
 
 /*/{Protheus.doc}
-Factory to provide instances of log appenders. Log appenders are
-strategies of logging. They could be CONSOLE, DATABASE, XML, etc.
+Logger factory class from AdvPL Store logging services.
+
+This will store the possible layouts for log messages.
 
 Permission is hereby granted, free  of charge, to any person obtaining
 a  copy  of this  software  and  associated  documentation files  (the
@@ -20,24 +21,26 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Read more at https://github.com/fredericoferreiracosta/com.advplstore.framework.logging
 /*/
-Class LogAppenderFactory
+Class LogFormatterFactory
     /*/{Protheus.doc}
     Default constructor.
     /*/
     Public Method New() Constructor
 
     /*/{Protheus.doc}
-    Returns the LogAppender instance.
+    Returns the LogFormatter instance.
     /*/
-    Public Method GetAppender(cAppender)
+    Public Method GetFormatter(cFormatter)
 EndClass
 
-Method New() Class LogAppenderFactory
+Method New() Class LogFormatterFactory
 Return Self
 
-Method GetAppender(cAppender) Class LogAppenderFactory
-    If cAppender == "CONSOLE"
-        return ConsoleAppender():New()
+Method GetFormatter(cFormatter) Class LogFormatterFactory
+    If cFormatter == "DEFAULT"
+        return DefaultLogFormatter():New()
     EndIf
 Return nil

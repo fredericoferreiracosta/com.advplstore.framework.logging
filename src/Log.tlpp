@@ -25,11 +25,13 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Read more at https://github.com/fredericoferreiracosta/com.advplstore.framework.logging
 /*/
 Class Log
-    Private Data cLogName
-    Private Data oFormatter
-    Private Data oAppender
+    Data cLogName
+    Data oFormatter
+    Data oAppender
     /*/{Protheus.doc}
     Default constructor.
     /*/
@@ -49,11 +51,11 @@ Class Log
     /*/{Protheus.doc}
     Will print the log in the console.
     /*/
-    Private Method Log(cLevel, cLog)
+    Method Log(cLevel, cLog)
 
-    Private Method GetLogMessageWithParameters(cLog, aParameters)
-    Private Method ApplyFormatter(cLogName, cLevel, cLog)
-    Private Method GetLogLevelFromLogString(cLevel)
+    Method GetLogMessageWithParameters(cLog, aParameters)
+    Method ApplyFormatter(cLogName, cLevel, cLog)
+    Method GetLogLevelFromLogString(cLevel)
 EndClass
 
 Method New(cLogName) Class Log

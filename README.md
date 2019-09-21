@@ -1,6 +1,6 @@
-# Framework de log para desenvolvimento em TL++.
+# Framework de log para desenvolvimento em AdvPL/TL++.
 
-Este framework adiciona algumas classes de log no repositório de objetos que podem ser invocadas de dentro do seu programa em TL++. Baseado no SLF4J, Logback e outros frameworks de mercado, este framework se destaca das funções padrões de Log da TOTVS por tratar níveis de log, formatos de exibição e estratégias de gravação.
+Este framework adiciona algumas classes de log no repositório de objetos que podem ser invocadas de dentro do seu programa TOTVS. Baseado no SLF4J, Logback e outros frameworks de mercado, este framework se destaca das funções padrões de Log da TOTVS por tratar níveis de log, formatos de exibição e estratégias de gravação.
 
 ## Como usar?
 
@@ -46,4 +46,4 @@ Output:
 Você pode alterar este layout de saída criando um novo formatter com o layout da sua empresa ou do seu cliente.
 ## Contribuição
 
-Este projeto é livre. Usem à vontade. Se encontrar algum bug reporte aqui no GitHub e se fizer alguma melhoria no código, contribua com um pull request :blush:
+Este projeto é livre. Use à vontade. Se encontrar algum bug reporte aqui no GitHub e se fizer alguma melhoria no código, contribua com um pull request :blush:
