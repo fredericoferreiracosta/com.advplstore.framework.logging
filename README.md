@@ -37,7 +37,7 @@ Caso não passe o nome do log no construtor da classe então o sistema usa a fun
 
 Parâmetros podem ser passados para o log sem se preocupar com o tipo da variável:
 ```
-oLogger:Info("My name is {} and I will be {} years old at {}.", {"Josh", 42, dDatabase})
+oLogger:Info("My name is {} and I will be {} years old at {}.", "Josh", 42, dDatabase)
 ```
 Output:
 ```

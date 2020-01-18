@@ -29,9 +29,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Read more at https://github.com/fredericoferreiracosta/com.advplstore.framework.logging
 /*/
 Class Log
-    Data cLogName
-    Data oFormatter
-    Data oAppender
+    Private Data cLogName
+    Private Data oFormatter
+    Private Data oAppender
     /*/{Protheus.doc}
     Default constructor.
     /*/
@@ -40,28 +40,28 @@ Class Log
     /*/{Protheus.doc}
     Decorators for the Log method.
     /*/
-    Public Method All(cLog, aParameters)
-    Public Method Trace(cLog, aParameters)
-    Public Method Debug(cLog, aParameters)
-    Public Method Info(cLog, aParameters)
-    Public Method Warn(cLog, aParameters)
-    Public Method Error(cLog, aParameters)
-    Public Method Fatal(cLog, aParameters)
+    Public Method All(cLog, aParameters As Variadic)
+    Public Method Trace(cLog, aParameters As Variadic)
+    Public Method Debug(cLog, aParameters As Variadic)
+    Public Method Info(cLog, aParameters As Variadic)
+    Public Method Warn(cLog, aParameters As Variadic)
+    Public Method Error(cLog, aParameters As Variadic)
+    Public Method Fatal(cLog, aParameters As Variadic)
 
     /*/{Protheus.doc}
     Will print the log in the console.
     /*/
-    Method Log(cLevel, cLog)
+    Private Method Log(cLevel, cLog)
 
-    Method GetLogMessageWithParameters(cLog, aParameters)
-    Method ApplyFormatter(cLogName, cLevel, cLog)
-    Method GetLogLevelFromLogString(cLevel)
+    Private Method GetLogMessageWithParameters(cLog, aParameters)
+    Private Method ApplyFormatter(cLogName, cLevel, cLog)
+    Private Method GetLogLevelFromLogString(cLevel)
 EndClass
 
 Method New(cLogName) Class Log
     Local oLogFormatterFactory := LogFormatterFactory():New()
     Local oLogAppenderFactory := LogAppenderFactory():New()
-    
+
     ::oFormatter := oLogFormatterFactory:GetFormatter(SuperGetMV("MV_LOGFORM",, "DEFAULT"))
     ::oAppender := oLogAppenderFactory:GetAppender(SuperGetMV("MV_LOGAPP",, "CONSOLE"))
 
@@ -72,30 +72,37 @@ Method New(cLogName) Class Log
     EndIf
 Return Self
 
-Method All(cLog, aParameters) Class Log
-Return ::Log("ALL", ::GetLogMessageWithParameters(cLog, aParameters))
+Method All(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("ALL", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Trace(cLog, aParameters) Class Log
-Return ::Log("TRACE", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Trace(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("TRACE", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Debug(cLog, aParameters) Class Log
-Return ::Log("DEBUG", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Debug(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("DEBUG", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Info(cLog, aParameters) Class Log
-Return ::Log("INFO", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Info(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("INFO", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Warn(cLog, aParameters) Class Log
-Return ::Log("WARN", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Warn(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("WARN", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Error(cLog, aParameters) Class Log
-Return ::Log("ERROR", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Error(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("ERROR", ::GetLogMessageWithParameters(cLog, aParamenters))
 
-Method Fatal(cLog, aParameters) Class Log
-Return ::Log("FATAL", ::GetLogMessageWithParameters(cLog, aParameters))
+Method Fatal(cLog, aArgs As Variadic) Class Log
+    Local aParamenters := Iif(aArgs == Nil, {}, aArgs:vArgs)
+Return ::Log("FATAL", ::GetLogMessageWithParameters(cLog, aParamenters))
 
 Method Log(cLevel, cLog) Class Log
     Local cCurrentLogLevel := SuperGetMV("MV_LOGLEVE",, "INFO")
-    
+
     If ::GetLogLevelFromLogString(cLevel) <= ::GetLogLevelFromLogString(cCurrentLogLevel)
         cLog := ::oFormatter:ApplyFormatter(::cLogName, cLevel, cLog)
         ::oAppender:Execute(cLog)

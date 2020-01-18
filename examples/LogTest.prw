@@ -12,6 +12,6 @@ User Function LogTest
     oLogger:Error("This is an error message")
     oLogger:Fatal("This is a fatal message")
 
-    oCustomLogger:Info("User {} had a bad experience creating the product {}.", {"Jo√£o", "001"})
-    oCustomLogger:Info("Bool {}, Integer {}, Char {}, Date {}", {.T., 42, "Test", Date()})
+    oCustomLogger:Info("User {} had a bad experience creating the product {}.", "Jo„o", "001")
+    oCustomLogger:Info("Bool {}, Integer {}, Char {}, Date {}", .T., 42, "Test", Date())
 Return
