@@ -69,7 +69,9 @@ qual implementação de formatter usar, caso não exista, o formatter padrão se
 
 ## Appenders
 
-Um appender define como seu log será impresso. Neste repositório atualmente existem dois appenders: ```CONSOLE``` e ```TEXT``` para impressão no console do AppServer e impressão em arquivo de texto respectivamente. O Appender ativo é controlado pelo parâmetro MV_LOGPATH, caso não exista o valor padrão será CONSOLE.
+Um appender define como seu log será impresso. Neste repositório atualmente existem dois appenders: ```CONSOLE``` e ```TEXT``` para impressão no console do AppServer e impressão em arquivo de texto respectivamente. O Appender ativo é controlado pelo parâmetro MV_LOGAPP, caso não exista o valor padrão será CONSOLE.
+
+Para o TEXT appender, o parâmetro MV_LOGPATH controla a pasta ondes os arquivos de logs são gerados. Caso não exista, os logs serão gerados na pasta Protheus_Data\logs.
 
 Implemente novos appenders conforme sua necessidade.
 
