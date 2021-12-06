@@ -1,8 +1,21 @@
 #include "protheus.ch"
 
+#define COMPANY_CODE "01"
+#define BRANCH_CODE "01"
+
 User Function LogTest
-    Local oLogger := Log():New()
-    Local oCustomLogger := Log():New("My custom log")
+    Local oLogger
+    Local oCustomLogger
+
+    If !TCIsConnected()
+		If !RpcSetEnv(COMPANY_CODE, BRANCH_CODE,,,, ProcName())
+			ConOut("It was not possible to login in Protheus.")
+			Return
+		EndIf
+	EndIf
+
+    oLogger := Log():New()
+    oCustomLogger := Log():New("My custom log")
 
     oLogger:All("This will be displayed always")
     oLogger:Trace("This is a trace message")

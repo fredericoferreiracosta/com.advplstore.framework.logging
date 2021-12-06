@@ -1,8 +1,10 @@
 #include "protheus.ch"
+#include "fileio.ch"
 
 /*/{Protheus.doc}
-Factory to provide instances of log appenders. Log appenders are
-strategies of logging. They could be CONSOLE, DATABASE, XML, etc.
+Console implementation for the AdvPL Store logging service.
+Will print the log messages in the TOTVS Console using ConOut
+function.
 
 Permission is hereby granted, free  of charge, to any person obtaining
 a  copy  of this  software  and  associated  documentation files  (the
@@ -23,25 +25,53 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Read more at https://github.com/fredericoferreiracosta/com.advplstore.framework.logging
 /*/
-Class LogAppenderFactory
+Class TextFileLogAppender
     /*/{Protheus.doc}
     Default constructor.
     /*/
     Public Method New() Constructor
 
     /*/{Protheus.doc}
-    Returns the LogAppender instance.
+    Execute the logging action. Returns nothing.
     /*/
-    Public Method GetAppender(cAppender)
+    Public Method Execute(cLog)
 EndClass
 
-Method New() Class LogAppenderFactory
+Method New() Class TextFileLogAppender
 Return Self
 
-Method GetAppender(cAppender) Class LogAppenderFactory
-    If cAppender == "CONSOLE"
-        return ConsoleLogAppender():New()
-    ElseIf cAppender == "TEXT"
-        return TextFileLogAppender():New()
+Method Execute(cLog) Class TextFileLogAppender
+    Local nHandler
+    Local cLogPath := SuperGetMV("MV_LOGPATH",, "\logs\")
+    Local cFileName := "logger-" + DToS(Date()) + ".log"
+
+    If Right(cLogPath, 1) != "\"
+        cLogPath += "\"
+    EndIF
+
+    If !ExistDir(cLogPath)
+		If MakeDir(cLogPath) != 0
+			ConOut("It was not possible to create folder " + cLogPath)
+            Return
+		EndIf
+	EndIf
+
+    If !File(cLogPath + cFileName)
+		nHandler := FCreate(cLogPath + cFileName)
+        If nHandler == -1
+            ConOut("Error while trying to create file " + cLogPath + cFileName + ". Error code: " + CValToChar(FError()))
+            Return
+        EndIf
+        FClose(nHandler)
+	EndIf
+
+    nHandler := FOpen(cLogPath + cFileName, FO_READWRITE + FO_SHARED)
+    If nHandler == -1
+        ConOut("Error while trying to open file " + cLogPath + cFileName + ". Error code: " + CValToChar(FError()))
+        Return
     EndIf
-Return nil
+    FSeek(nHandler, 0, FS_END)
+    FWrite(nHandler, cLog + Chr(13) + Chr(10))
+
+    FClose(nHandler)
+Return
