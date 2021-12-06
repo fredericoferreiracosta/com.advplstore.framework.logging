@@ -41,7 +41,7 @@ Return Self
 Method GetAppender(cAppender) Class LogAppenderFactory
     If cAppender == "CONSOLE"
         return ConsoleLogAppender():New()
-    ElseIf cAppender == "TEXT"
-        return TextFileLogAppender():New()
+    ElseIf cAppender == "FILE"
+        return FileLogAppender():New()
     EndIf
 Return nil
